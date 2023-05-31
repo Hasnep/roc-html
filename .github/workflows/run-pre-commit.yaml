@@ -1,0 +1,30 @@
+name: Run Pre-commit
+
+on:
+  # Run on all PRs
+  pull_request:
+  # Run when a PR is merged into main
+  push:
+    branches:
+      - main
+
+jobs:
+  run-pre-commit:
+    name: Run pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install Roc
+        uses: hasnep/setup-roc@main
+        with:
+          roc-version: nightly
+      - name: Run Pre-commit
+        uses: pre-commit/action@v3.0.0
+        env:
+          # Prevent this action failing when running on the main branch
+          SKIP: no-commit-to-branch

@@ -1,0 +1,9 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    # Look for workflow files in .github/workflows/
+    directory: /
+    # Check for updates once a month
+    schedule:
+      interval: monthly

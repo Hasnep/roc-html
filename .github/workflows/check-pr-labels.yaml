@@ -1,0 +1,26 @@
+name: Check PR labels
+
+on:
+  # Run on all PRs
+  pull_request:
+    types:
+      - labeled
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  check-pr-labels:
+    name: Check PR labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for PR category labels
+        uses: yogevbd/enforce-label-action@2.2.2
+        with:
+          REQUIRED_LABELS_ANY: feature,fix,chore
+          REQUIRED_LABELS_ANY_DESCRIPTION: Please tag your PR with one of `feature`, `fix`, or `chore`.
+      - name: Check for PR version labels
+        uses: yogevbd/enforce-label-action@2.2.2
+        with:
+          REQUIRED_LABELS_ANY: major,minor,patch
+          REQUIRED_LABELS_ANY_DESCRIPTION: Please tag your PR with one of `major`, `minor`, `patch`.

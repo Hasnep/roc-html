@@ -1,0 +1,31 @@
+# The name of the release
+name-template: v$RESOLVED_VERSION
+# The tag of the release
+tag-template: v$RESOLVED_VERSION
+# Template for category headings
+category-template: "### $TITLE"
+# Template for each individual change
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+change-title-escapes: \<*_&
+categories:
+  - title: Features
+    label: feature
+  - title: Bug fixes
+    labels: fix
+  - title: Maintenance
+    label: chore
+version-resolver:
+  major:
+    labels:
+      - major
+  minor:
+    labels:
+      - minor
+  patch:
+    labels:
+      - patch
+  default: patch # Default increment if no PRs are found
+template: |
+  ## Changelog
+
+  $CHANGES

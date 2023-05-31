@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  # Run on all PRs
+  pull_request:
+    paths-ignore:
+      - "**.md"
+  # Run when a PR is merged into main
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Install Roc
+        uses: hasnep/setup-roc@main
+        with:
+          roc-version: nightly
+      - name: Test the library
+        run: roc test src/main.roc

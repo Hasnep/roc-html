@@ -1,0 +1,73 @@
+repos:
+  # General checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - name: Prevent committing to main
+        id: no-commit-to-branch
+        args: [--branch, main]
+      - name: Make sure files end with a newline character
+        id: end-of-file-fixer
+      - name: Remove trailing whitespace
+        id: trailing-whitespace
+      - name: Check for files that would conflict on case-insensitive filesystem
+        id: check-case-conflict
+      - name: Check for merge conflicts
+        id: check-merge-conflict
+      - name: Check executable files have a shebang
+        id: check-executables-have-shebangs
+      - name: Check scripts with a shebang are executable
+        id: check-shebang-scripts-are-executable
+      - name: Don't allow adding large files
+        id: check-added-large-files
+
+  # Roc
+  - repo: https://github.com/hasnep/pre-commit-roc
+    rev: v0.1.0
+    hooks:
+      - name: Lint Roc files
+        id: check
+        args: [src/main.roc]
+      - name: Format Roc files
+        id: format
+
+  # YAML
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - name: Validate YAML
+        id: check-yaml
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.4
+    hooks:
+      - name: Format YAML files
+        id: prettier
+        types: [yaml]
+
+  # Markdown
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.4
+    hooks:
+      - name: Format markdown files
+        id: prettier
+        types: [markdown]
+
+  # GitHub Actions
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.19.2
+    hooks:
+      - name: Validate GitHub Actions workflow files
+        id: check-github-workflows
+
+  # Pre-commit
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.21.0
+    hooks:
+      - name: Validate Pre-commit config
+        id: check-jsonschema
+        files: ^.*\.pre-commit-config.yaml$
+        args:
+          [
+            "--schemafile",
+            "https://json.schemastore.org/pre-commit-config.json",
+          ]
