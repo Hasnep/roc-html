@@ -5,6 +5,7 @@ interface Html
         element,
         render,
         renderWithoutDocType,
+        dangerouslyIncludeUnescapedHtml,
         # Content sectioning
         address,
         article,
@@ -134,14 +135,44 @@ interface Html
         slot,
         template,
     ]
-    imports [Attribute.{ Attribute, attribute }]
+    imports [Attribute.{ Attribute, attribute }, SafeStr.{ SafeStr, escape, dangerouslyMarkSafe }]
 
 ## An HTML node, either an HTML element or some text inside an HTML element.
-Node : [Element Str Nat (List Attribute) (List Node), Text Str]
+Node : [Element Str Nat (List Attribute) (List Node), Text Str, UnescapedHtml Str]
 
 ## Create a `Text` node containing a string.
+##
+## The string will be escaped so that it's safely rendered as a text node even if the string contains HTML tags.
+##
+## ```
+## expect
+##     textNode = Html.text "<script>alert('hi')</script>"
+##     Html.renderWithoutDocType textNode == "&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;"
+## ```
 text : Str -> Node
 text = Text
+
+expect
+    textNode = Html.text "<script>alert('hi')</script>"
+    Html.renderWithoutDocType textNode == "&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;"
+
+## Mark a string as safe for HTML without actually escaping it.
+##
+## DO NOT use this function unless you're sure the input string is safe.
+##
+## NEVER use this function on user input; use the `text` function instead.
+##
+## ```
+## expect
+##     htmlNode = Html.dangerouslyIncludeUnescapedHtml "<script>alert('This JavaScript will run')</script>"
+##     Html.renderWithoutDocType htmlNode ==  "<script>alert('This JavaScript will run')</script>"
+## ```
+dangerouslyIncludeUnescapedHtml : Str -> Node
+dangerouslyIncludeUnescapedHtml = UnescapedHtml
+
+expect
+    htmlNode = Html.dangerouslyIncludeUnescapedHtml "<script>alert('This JavaScript will run')</script>"
+    Html.renderWithoutDocType htmlNode == "<script>alert('This JavaScript will run')</script>"
 
 ## Define a non-standard HTML Element.
 ## You can use this to add elements that are not already supported.
@@ -171,6 +202,12 @@ nodeSize : Node -> Nat
 nodeSize = \node ->
     when node is
         Text content ->
+            # We allocate more bytes than the original string had because we'll need extra bytes
+            # if there are any characters we need to escape. My choice of the proportion 3/2
+            # was arbitrary.
+            Str.countUtf8Bytes content |> Num.divCeil 2 |> Num.mul 3
+
+        UnescapedHtml content ->
             Str.countUtf8Bytes content
 
         Element _ size _ _ ->
@@ -183,45 +220,68 @@ nodeSize = \node ->
 ## See also `renderWithoutDocType`.
 render : Node -> Str
 render = \node ->
-    buffer = Str.reserve "<!DOCTYPE html>" (nodeSize node)
+    buffer = SafeStr.reserve (dangerouslyMarkSafe "<!DOCTYPE html>") (nodeSize node)
 
     renderHelp buffer node
+    |> SafeStr.toStr
 
 expect
     exampleDocument = html [] [body [] [p [(attribute "example") "test"] [text "Hello, World!"]]]
     out = render exampleDocument
     out == "<!DOCTYPE html><html><body><p example=\"test\">Hello, World!</p></body></html>"
 
+expect
+    exampleDocument = html [] [body [] [p [(attribute "example") "test"] [text "<script>alert('hi')</script>"]]]
+    out = render exampleDocument
+    out == "<!DOCTYPE html><html><body><p example=\"test\">&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;</p></body></html>"
+
+expect
+    exampleDocument = html [] [body [] [p [(attribute "example") "test"] [dangerouslyIncludeUnescapedHtml "<script>alert('hi')</script>"]]]
+    out = render exampleDocument
+    out == "<!DOCTYPE html><html><body><p example=\"test\"><script>alert('hi')</script></p></body></html>"
+
 ## Render a Node to a string, without a `!DOCTYPE` tag.
 renderWithoutDocType : Node -> Str
 renderWithoutDocType = \node ->
-    buffer = Str.reserve "" (nodeSize node)
+    buffer = SafeStr.withCapacity (nodeSize node)
 
     renderHelp buffer node
+    |> SafeStr.toStr
 
 ## An internal helper to render a node to a string buffer.
-renderHelp : Str, Node -> Str
+renderHelp : SafeStr, Node -> SafeStr
 renderHelp = \buffer, node ->
     when node is
         Text content ->
-            Str.concat buffer content
+            SafeStr.concat buffer (escape content)
+
+        UnescapedHtml content ->
+            SafeStr.concat buffer (dangerouslyMarkSafe content)
 
         Element tagName _ attrs children ->
-            withTagName = "\(buffer)<\(tagName)"
-            withAttrs =
+            buffer
+            |> SafeStr.concat (dangerouslyMarkSafe "<")
+            |> SafeStr.concat (dangerouslyMarkSafe tagName)
+            |> \withTagName ->
                 if List.isEmpty attrs then
                     withTagName
                 else
-                    List.walk attrs "\(withTagName)" renderAttr
-            withTag = Str.concat withAttrs ">"
-            withChildren = List.walk children withTag renderHelp
-
-            "\(withChildren)</\(tagName)>"
+                    List.walk attrs withTagName renderAttr
+            |> SafeStr.concat (dangerouslyMarkSafe ">")
+            |> \withTag -> List.walk children withTag renderHelp
+            |> SafeStr.concat (dangerouslyMarkSafe "</")
+            |> SafeStr.concat (dangerouslyMarkSafe tagName)
+            |> SafeStr.concat (dangerouslyMarkSafe ">")
 
 ## An internal helper to render an attribute to a string buffer.
-renderAttr : Str, Attribute -> Str
+renderAttr : SafeStr, Attribute -> SafeStr
 renderAttr = \buffer, Attribute key value ->
-    "\(buffer) \(key)=\"\(value)\""
+    buffer
+    |> SafeStr.concat (dangerouslyMarkSafe " ")
+    |> SafeStr.concat (dangerouslyMarkSafe key)
+    |> SafeStr.concat (dangerouslyMarkSafe "=\"")
+    |> SafeStr.concat (escape value)
+    |> SafeStr.concat (dangerouslyMarkSafe "\"")
 
 # Content sectioning
 
