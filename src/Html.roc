@@ -153,8 +153,8 @@ text : Str -> Node
 text = Text
 
 expect
-    textNode = Html.text "<script>alert('hi')</script>"
-    Html.renderWithoutDocType textNode == "&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;"
+    textNode = text "<script>alert('hi')</script>"
+    renderWithoutDocType textNode == "&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;"
 
 ## Mark a string as safe for HTML without actually escaping it.
 ##
@@ -171,8 +171,8 @@ dangerouslyIncludeUnescapedHtml : Str -> Node
 dangerouslyIncludeUnescapedHtml = UnescapedHtml
 
 expect
-    htmlNode = Html.dangerouslyIncludeUnescapedHtml "<script>alert('This JavaScript will run')</script>"
-    Html.renderWithoutDocType htmlNode == "<script>alert('This JavaScript will run')</script>"
+    htmlNode = dangerouslyIncludeUnescapedHtml "<script>alert('This JavaScript will run')</script>"
+    renderWithoutDocType htmlNode == "<script>alert('This JavaScript will run')</script>"
 
 ## Define a non-standard HTML Element.
 ## You can use this to add elements that are not already supported.
