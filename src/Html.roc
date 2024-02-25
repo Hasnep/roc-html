@@ -138,7 +138,7 @@ interface Html
     imports [Attribute.{ Attribute, attribute }, SafeStr.{ SafeStr, escape, dangerouslyMarkSafe }]
 
 ## An HTML node, either an HTML element or some text inside an HTML element.
-Node : [Element Str Nat (List Attribute) (List Node), Text Str, UnescapedHtml Str]
+Node : [Element Str U64 (List Attribute) (List Node), Text Str, UnescapedHtml Str]
 
 ## Create a `Text` node containing a string.
 ##
@@ -198,7 +198,7 @@ element = \tagName ->
         Element tagName totalSize attrs children
 
 ## Internal helper to calculate the size of a node
-nodeSize : Node -> Nat
+nodeSize : Node -> U64
 nodeSize = \node ->
     when node is
         Text content ->
