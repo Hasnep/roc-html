@@ -76,14 +76,14 @@ expect
     toStr (dangerouslyMarkSafe badStr) == badStr
 
 ## The SafeStr equivalent of Str.withCapacity
-withCapacity : Nat -> SafeStr
+withCapacity : U64 -> SafeStr
 withCapacity = \capacity ->
     @SafeStr (Str.withCapacity capacity)
 
 expect toStr (withCapacity 10) == ""
 
 ## The SafeStr equivalent of Str.reserve
-reserve : SafeStr, Nat -> SafeStr
+reserve : SafeStr, U64 -> SafeStr
 reserve = \@SafeStr str, additionalCapacity ->
     @SafeStr (Str.reserve str additionalCapacity)
 
