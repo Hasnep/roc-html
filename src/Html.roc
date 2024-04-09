@@ -3,6 +3,7 @@ interface Html
         Node,
         text,
         element,
+        voidElement,
         render,
         renderWithoutDocType,
         dangerouslyIncludeUnescapedHtml,
@@ -174,7 +175,7 @@ expect
     htmlNode = dangerouslyIncludeUnescapedHtml "<script>alert('This JavaScript will run')</script>"
     renderWithoutDocType htmlNode == "<script>alert('This JavaScript will run')</script>"
 
-## Define a non-standard HTML Element.
+## Define a non-standard HTML element.
 ## You can use this to add elements that are not already supported.
 ##
 ## For example, you could bring back the obsolete <blink> element and add some 90's nostalgia to your web page!
@@ -196,6 +197,18 @@ element = \tagName ->
             acc + nodeSize child
 
         Element tagName totalSize attrs children
+
+## Define a non-standard HTML [void element](https://developer.mozilla.org/en-US/docs/Glossary/Void_element).
+## A void element is an element that cannot have any children.
+voidElement : Str -> (List Attribute -> Node)
+voidElement = \tagName ->
+    \attrs ->
+        # While building the node tree, calculate the size of Str it will render to
+        withTag = 2 * (3 + Str.countUtf8Bytes tagName)
+        withAttrs = List.walk attrs withTag \acc, Attribute name val ->
+            acc + Str.countUtf8Bytes name + Str.countUtf8Bytes val + 4
+
+        Element tagName withAttrs attrs []
 
 ## Internal helper to calculate the size of a node
 nodeSize : Node -> U64
@@ -240,6 +253,11 @@ expect
     out = render exampleDocument
     out == "<!DOCTYPE html><html><body><p example=\"test\"><script>alert('hi')</script></p></body></html>"
 
+expect
+    exampleDocument = html [] [body [] [base [], link [], meta [], embed [], source [], input [], area [], img [], track [], br [], wbr [], col [], hr []]]
+    out = render exampleDocument
+    out == "<!DOCTYPE html><html><body><base/><link/><meta/><embed/><source/><input/><area/><img/><track/><br/><wbr/><col/><hr/></body></html>"
+
 ## Render a Node to a string, without a `!DOCTYPE` tag.
 renderWithoutDocType : Node -> Str
 renderWithoutDocType = \node ->
@@ -259,19 +277,33 @@ renderHelp = \buffer, node ->
             SafeStr.concat buffer (dangerouslyMarkSafe content)
 
         Element tagName _ attrs children ->
-            buffer
-            |> SafeStr.concat (dangerouslyMarkSafe "<")
-            |> SafeStr.concat (dangerouslyMarkSafe tagName)
-            |> \withTagName ->
-                if List.isEmpty attrs then
-                    withTagName
-                else
-                    List.walk attrs withTagName renderAttr
-            |> SafeStr.concat (dangerouslyMarkSafe ">")
-            |> \withTag -> List.walk children withTag renderHelp
-            |> SafeStr.concat (dangerouslyMarkSafe "</")
-            |> SafeStr.concat (dangerouslyMarkSafe tagName)
-            |> SafeStr.concat (dangerouslyMarkSafe ">")
+            when tagName is
+                # Special case for void elements
+                "base" | "link" | "meta" | "embed" | "source" | "input" | "area" | "img" | "track" | "br" | "wbr" | "col" | "hr" ->
+                    buffer
+                    |> SafeStr.concat (dangerouslyMarkSafe "<")
+                    |> SafeStr.concat (dangerouslyMarkSafe tagName)
+                    |> \withTagName ->
+                        if List.isEmpty attrs then
+                            withTagName
+                        else
+                            List.walk attrs withTagName renderAttr
+                    |> SafeStr.concat (dangerouslyMarkSafe "/>") # Use self-closing tag syntax for compatibility with XHTML
+
+                _ ->
+                    buffer
+                    |> SafeStr.concat (dangerouslyMarkSafe "<")
+                    |> SafeStr.concat (dangerouslyMarkSafe tagName)
+                    |> \withTagName ->
+                        if List.isEmpty attrs then
+                            withTagName
+                        else
+                            List.walk attrs withTagName renderAttr
+                    |> SafeStr.concat (dangerouslyMarkSafe ">")
+                    |> \withTag -> List.walk children withTag renderHelp
+                    |> SafeStr.concat (dangerouslyMarkSafe "</")
+                    |> SafeStr.concat (dangerouslyMarkSafe tagName)
+                    |> SafeStr.concat (dangerouslyMarkSafe ">")
 
 ## An internal helper to render an attribute to a string buffer.
 renderAttr : SafeStr, Attribute -> SafeStr
@@ -354,20 +386,20 @@ ins = element "ins"
 # Document metadata
 
 ## Construct a `base` element.
-base : List Attribute, List Node -> Node
-base = element "base"
+base : List Attribute -> Node
+base = voidElement "base"
 
 ## Construct a `head` element.
 head : List Attribute, List Node -> Node
 head = element "head"
 
 ## Construct a `link` element.
-link : List Attribute, List Node -> Node
-link = element "link"
+link : List Attribute -> Node
+link = voidElement "link"
 
 ## Construct a `meta` element.
-meta : List Attribute, List Node -> Node
-meta = element "meta"
+meta : List Attribute -> Node
+meta = voidElement "meta"
 
 ## Construct a `style` element.
 style : List Attribute, List Node -> Node
@@ -380,8 +412,8 @@ title = element "title"
 # Embedded content
 
 ## Construct a `embed` element.
-embed : List Attribute, List Node -> Node
-embed = element "embed"
+embed : List Attribute -> Node
+embed = voidElement "embed"
 
 ## Construct a `iframe` element.
 iframe : List Attribute, List Node -> Node
@@ -400,8 +432,8 @@ portal : List Attribute, List Node -> Node
 portal = element "portal"
 
 ## Construct a `source` element.
-source : List Attribute, List Node -> Node
-source = element "source"
+source : List Attribute -> Node
+source = voidElement "source"
 
 # Forms
 
@@ -422,8 +454,8 @@ form : List Attribute, List Node -> Node
 form = element "form"
 
 ## Construct a `input` element.
-input : List Attribute, List Node -> Node
-input = element "input"
+input : List Attribute -> Node
+input = voidElement "input"
 
 ## Construct a `label` element.
 label : List Attribute, List Node -> Node
@@ -464,24 +496,24 @@ textarea = element "textarea"
 # Image and multimedia
 
 ## Construct a `area` element.
-area : List Attribute, List Node -> Node
-area = element "area"
+area : List Attribute -> Node
+area = voidElement "area"
 
 ## Construct a `audio` element.
 audio : List Attribute, List Node -> Node
 audio = element "audio"
 
 ## Construct a `img` element.
-img : List Attribute, List Node -> Node
-img = element "img"
+img : List Attribute -> Node
+img = voidElement "img"
 
 ## Construct a `map` element.
 map : List Attribute, List Node -> Node
 map = element "map"
 
 ## Construct a `track` element.
-track : List Attribute, List Node -> Node
-track = element "track"
+track : List Attribute -> Node
+track = voidElement "track"
 
 ## Construct a `video` element.
 video : List Attribute, List Node -> Node
@@ -510,8 +542,8 @@ bdo : List Attribute, List Node -> Node
 bdo = element "bdo"
 
 ## Construct a `br` element.
-br : List Attribute, List Node -> Node
-br = element "br"
+br : List Attribute -> Node
+br = voidElement "br"
 
 ## Construct a `cite` element.
 cite : List Attribute, List Node -> Node
@@ -602,8 +634,8 @@ var : List Attribute, List Node -> Node
 var = element "var"
 
 ## Construct a `wbr` element.
-wbr : List Attribute, List Node -> Node
-wbr = element "wbr"
+wbr : List Attribute -> Node
+wbr = voidElement "wbr"
 
 # Interactive elements
 
@@ -662,8 +694,8 @@ caption : List Attribute, List Node -> Node
 caption = element "caption"
 
 ## Construct a `col` element.
-col : List Attribute, List Node -> Node
-col = element "col"
+col : List Attribute -> Node
+col = voidElement "col"
 
 ## Construct a `colgroup` element.
 colgroup : List Attribute, List Node -> Node
@@ -728,8 +760,8 @@ figure : List Attribute, List Node -> Node
 figure = element "figure"
 
 ## Construct a `hr` element.
-hr : List Attribute, List Node -> Node
-hr = element "hr"
+hr : List Attribute -> Node
+hr = voidElement "hr"
 
 ## Construct a `li` element.
 li : List Attribute, List Node -> Node
