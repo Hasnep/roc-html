@@ -1,13 +1,12 @@
-interface SafeStr
-    exposes [
-        toStr,
-        escape,
-        dangerouslyMarkSafe,
-        withCapacity,
-        concat,
-        reserve,
-    ]
-    imports []
+module [
+    SafeStr,
+    toStr,
+    escape,
+    dangerouslyMarkSafe,
+    withCapacity,
+    concat,
+    reserve,
+]
 
 ## An opaque type used to keep track of the fact that we know a string is HTML-safe.
 SafeStr := Str
