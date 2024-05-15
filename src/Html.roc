@@ -257,7 +257,7 @@ expect
 expect
     exampleDocument = html [] [body [] [base [], link [], meta [], embed [], source [], input [], area [], img [], track [], br [], wbr [], col [], hr []]]
     out = render exampleDocument
-    out == "<!DOCTYPE html><html><body><base/><link/><meta/><embed/><source/><input/><area/><img/><track/><br/><wbr/><col/><hr/></body></html>"
+    out == "<!DOCTYPE html><html><body><base><link><meta><embed><source><input><area><img><track><br><wbr><col><hr></body></html>"
 
 ## Render a Node to a string, without a `!DOCTYPE` tag.
 renderWithoutDocType : Node -> Str
@@ -289,7 +289,7 @@ renderHelp = \buffer, node ->
                             withTagName
                         else
                             List.walk attrs withTagName renderAttr
-                    |> SafeStr.concat (dangerouslyMarkSafe "/>") # Use self-closing tag syntax for compatibility with XHTML
+                    |> SafeStr.concat (dangerouslyMarkSafe ">") # Don't use self-closing tag syntax for void elements
 
                 _ ->
                     buffer
