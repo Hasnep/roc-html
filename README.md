@@ -12,7 +12,7 @@ Html.html [] [
         Html.h1 [] [Html.text "Roc"],
         Html.p [] [
             Html.text "You should really check out ",
-            Html.a [Attributes.href "https://roc-lang.org/"] [Html.text "Roc"],
+            Html.a [Attribute.href "https://roc-lang.org/"] [Html.text "Roc"],
             Html.text "!",
         ]
     ]
