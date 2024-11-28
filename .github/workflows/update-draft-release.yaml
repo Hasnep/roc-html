@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Update the draft release
         id: update-draft-release
-        uses: release-drafter/release-drafter@v5
+        uses: release-drafter/release-drafter@v6
         with:
           config-name: release-drafter.yaml
           disable-autolabeler: true
