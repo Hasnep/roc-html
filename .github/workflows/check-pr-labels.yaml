@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check for PR category labels
-        uses: yogevbd/enforce-label-action@2.2.2
+        uses: yogevbd/enforce-label-action@a3c219da6b8fa73f6ba62b68ff09c469b3a1c024 # ratchet:yogevbd/enforce-label-action@2.2.2
         with:
           REQUIRED_LABELS_ANY: feature,fix,chore
           REQUIRED_LABELS_ANY_DESCRIPTION: Please tag your PR with one of `feature`, `fix`, or `chore`.
       - name: Check for PR version labels
-        uses: yogevbd/enforce-label-action@2.2.2
+        uses: yogevbd/enforce-label-action@a3c219da6b8fa73f6ba62b68ff09c469b3a1c024 # ratchet:yogevbd/enforce-label-action@2.2.2
         with:
           REQUIRED_LABELS_ANY: major,minor,patch
           REQUIRED_LABELS_ANY_DESCRIPTION: Please tag your PR with one of `major`, `minor`, `patch`.

@@ -14,13 +14,13 @@ jobs:
       contents: write
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
       - name: Install Roc
-        uses: hasnep/setup-roc@main
+        uses: hasnep/setup-roc@80f4b4a1b94a7a89b3152e9b4e635367e7c0a940 # ratchet:hasnep/setup-roc@main
         with:
           roc-version: nightly
       - name: Bundle and release the library
-        uses: hasnep/bundle-roc-library@v0.1.0
+        uses: hasnep/bundle-roc-library@4364d15b4ae83c99e0bc0caab8a254a5d0a9369f # ratchet:hasnep/bundle-roc-library@v0.1.0
         with:
           library: src/main.roc
           token: ${{ github.token }}
