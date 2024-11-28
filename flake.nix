@@ -32,10 +32,14 @@
             name = "roc-html";
             packages = [
               inputs'.roc.packages.cli
+              pkgs.actionlint
+              pkgs.check-jsonschema
               pkgs.fd
               pkgs.just
               pkgs.nixfmt-rfc-style
+              pkgs.nodePackages.prettier
               pkgs.pre-commit
+              pkgs.python312Packages.pre-commit-hooks
             ];
             shellHook = "pre-commit install --overwrite";
           };
