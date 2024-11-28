@@ -16,3 +16,6 @@ examples:
 
 docs:
     roc docs src/main.roc
+
+ratchet:
+    ratchet upgrade .github/workflows/*.yaml

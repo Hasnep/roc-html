@@ -77,6 +77,12 @@ repos:
         entry: actionlint
         types: [yaml]
         files: \.github/workflows/.*\.ya?ml$
+      - name: Check GitHub Actions are pinned
+        id: github-workflows-check-pinned
+        language: system
+        entry: ratchet check
+        types: [yaml]
+        files: \.github/workflows/.*\.ya?ml$
 
   # Nix
   - repo: local
