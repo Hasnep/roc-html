@@ -15,16 +15,16 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-      - name: Install Python
-        uses: actions/setup-python@v5
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v16
+      - name: Cache Nix environment
+        uses: DeterminateSystems/magic-nix-cache-action@v8
+      - name: Use Nix dev shell for subsequent steps
+        uses: rrbutani/use-nix-shell-action@v1
         with:
-          python-version: "3.11"
-      - name: Install Roc
-        uses: hasnep/setup-roc@main
-        with:
-          roc-version: nightly
+          extraNixOptions: --accept-flake-config
       - name: Run Pre-commit
-        uses: pre-commit/action@v3.0.1
+        run: pre-commit run --all-files
         env:
           # Prevent this action failing when running on the main branch
           SKIP: no-commit-to-branch

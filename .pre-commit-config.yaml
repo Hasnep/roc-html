@@ -1,25 +1,44 @@
 repos:
   # General checks
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+  - repo: local
     hooks:
       - name: Prevent committing to main
         id: no-commit-to-branch
+        language: system
+        entry: no-commit-to-branch
         args: [--branch, main]
+        pass_filenames: false
       - name: Make sure files end with a newline character
         id: end-of-file-fixer
+        language: system
+        entry: end-of-file-fixer
+        types: [text]
       - name: Remove trailing whitespace
-        id: trailing-whitespace
+        id: trailing-whitespace-fixer
+        language: system
+        entry: trailing-whitespace-fixer
+        types: [text]
       - name: Check for files that would conflict on case-insensitive filesystem
         id: check-case-conflict
+        language: system
+        entry: check-case-conflict
       - name: Check for merge conflicts
         id: check-merge-conflict
+        language: system
+        entry: check-merge-conflict
       - name: Check executable files have a shebang
         id: check-executables-have-shebangs
+        language: system
+        entry: check-executables-have-shebangs
+        types: [executable]
       - name: Check scripts with a shebang are executable
         id: check-shebang-scripts-are-executable
+        language: system
+        entry: check-shebang-scripts-are-executable
       - name: Don't allow adding large files
         id: check-added-large-files
+        language: system
+        entry: check-added-large-files
 
   # Roc
   - repo: https://github.com/hasnep/pre-commit-roc
@@ -32,42 +51,38 @@ repos:
         id: format
 
   # YAML
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-      - name: Validate YAML
-        id: check-yaml
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.0-alpha.4
+  - repo: local
     hooks:
       - name: Format YAML files
-        id: prettier
+        id: yaml-format
+        language: system
+        entry: prettier --write
         types: [yaml]
 
   # Markdown
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.0-alpha.4
+  - repo: local
     hooks:
       - name: Format markdown files
-        id: prettier
+        id: markdown-format
+        language: system
+        entry: prettier --write
         types: [markdown]
 
   # GitHub Actions
-  - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.19.2
+  - repo: local
     hooks:
       - name: Validate GitHub Actions workflow files
-        id: check-github-workflows
+        id: github-workflows-check
+        language: system
+        entry: actionlint
+        types: [yaml]
+        files: \.github/workflows/.*\.ya?ml$
 
-  # Pre-commit
-  - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.21.0
+  # Nix
+  - repo: local
     hooks:
-      - name: Validate Pre-commit config
-        id: check-jsonschema
-        files: ^.*\.pre-commit-config.yaml$
-        args:
-          [
-            "--schemafile",
-            "https://json.schemastore.org/pre-commit-config.json",
-          ]
+      - name: Format Nix files
+        id: nix-format
+        language: system
+        entry: nixfmt
+        types: [nix]
