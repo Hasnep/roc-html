@@ -40,6 +40,7 @@
               pkgs.nodePackages.prettier
               pkgs.pre-commit
               pkgs.python312Packages.pre-commit-hooks
+              pkgs.ratchet
             ];
             shellHook = "pre-commit install --overwrite";
           };
