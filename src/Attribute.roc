@@ -2,7 +2,7 @@ module [
     Attribute,
     attribute,
     accept,
-    acceptCharset,
+    accept_charset,
     accesskey,
     action,
     align,
@@ -60,7 +60,7 @@ module [
     high,
     href,
     hreflang,
-    httpEquiv,
+    http_equiv,
     icon,
     id,
     importance,
@@ -139,529 +139,529 @@ Attribute : [Attribute Str Str]
 ## Define a non-standard attribute.
 ## You can use this to add attributes that are not already supported.
 attribute : Str -> (Str -> Attribute)
-attribute = \attrName ->
-    \attrValue -> Attribute attrName attrValue
+attribute = |attr_name|
+    |attr_value| Attribute(attr_name, attr_value)
 
 ## Construct a `accept` attribute.
 accept : Str -> Attribute
-accept = attribute "accept"
+accept = attribute("accept")
 
 ## Construct a `accept-charset` attribute.
-acceptCharset : Str -> Attribute
-acceptCharset = attribute "accept-charset"
+accept_charset : Str -> Attribute
+accept_charset = attribute("accept-charset")
 
 ## Construct a `accesskey` attribute.
 accesskey : Str -> Attribute
-accesskey = attribute "accesskey"
+accesskey = attribute("accesskey")
 
 ## Construct a `action` attribute.
 action : Str -> Attribute
-action = attribute "action"
+action = attribute("action")
 
 ## Construct a `align` attribute.
 align : Str -> Attribute
-align = attribute "align"
+align = attribute("align")
 
 ## Construct a `allow` attribute.
 allow : Str -> Attribute
-allow = attribute "allow"
+allow = attribute("allow")
 
 ## Construct a `alt` attribute.
 alt : Str -> Attribute
-alt = attribute "alt"
+alt = attribute("alt")
 
 ## Construct a `async` attribute.
 async : Str -> Attribute
-async = attribute "async"
+async = attribute("async")
 
 ## Construct a `autocapitalize` attribute.
 autocapitalize : Str -> Attribute
-autocapitalize = attribute "autocapitalize"
+autocapitalize = attribute("autocapitalize")
 
 ## Construct a `autocomplete` attribute.
 autocomplete : Str -> Attribute
-autocomplete = attribute "autocomplete"
+autocomplete = attribute("autocomplete")
 
 ## Construct a `autofocus` attribute.
 autofocus : Str -> Attribute
-autofocus = attribute "autofocus"
+autofocus = attribute("autofocus")
 
 ## Construct a `autoplay` attribute.
 autoplay : Str -> Attribute
-autoplay = attribute "autoplay"
+autoplay = attribute("autoplay")
 
 ## Construct a `background` attribute.
 background : Str -> Attribute
-background = attribute "background"
+background = attribute("background")
 
 ## Construct a `bgcolor` attribute.
 bgcolor : Str -> Attribute
-bgcolor = attribute "bgcolor"
+bgcolor = attribute("bgcolor")
 
 ## Construct a `border` attribute.
 border : Str -> Attribute
-border = attribute "border"
+border = attribute("border")
 
 ## Construct a `buffered` attribute.
 buffered : Str -> Attribute
-buffered = attribute "buffered"
+buffered = attribute("buffered")
 
 ## Construct a `capture` attribute.
 capture : Str -> Attribute
-capture = attribute "capture"
+capture = attribute("capture")
 
 ## Construct a `challenge` attribute.
 challenge : Str -> Attribute
-challenge = attribute "challenge"
+challenge = attribute("challenge")
 
 ## Construct a `charset` attribute.
 charset : Str -> Attribute
-charset = attribute "charset"
+charset = attribute("charset")
 
 ## Construct a `checked` attribute.
 checked : Str -> Attribute
-checked = attribute "checked"
+checked = attribute("checked")
 
 ## Construct a `cite` attribute.
 cite : Str -> Attribute
-cite = attribute "cite"
+cite = attribute("cite")
 
 ## Construct a `class` attribute.
 class : Str -> Attribute
-class = attribute "class"
+class = attribute("class")
 
 ## Construct a `code` attribute.
 code : Str -> Attribute
-code = attribute "code"
+code = attribute("code")
 
 ## Construct a `codebase` attribute.
 codebase : Str -> Attribute
-codebase = attribute "codebase"
+codebase = attribute("codebase")
 
 ## Construct a `color` attribute.
 color : Str -> Attribute
-color = attribute "color"
+color = attribute("color")
 
 ## Construct a `cols` attribute.
 cols : Str -> Attribute
-cols = attribute "cols"
+cols = attribute("cols")
 
 ## Construct a `colspan` attribute.
 colspan : Str -> Attribute
-colspan = attribute "colspan"
+colspan = attribute("colspan")
 
 ## Construct a `content` attribute.
 content : Str -> Attribute
-content = attribute "content"
+content = attribute("content")
 
 ## Construct a `contenteditable` attribute.
 contenteditable : Str -> Attribute
-contenteditable = attribute "contenteditable"
+contenteditable = attribute("contenteditable")
 
 ## Construct a `contextmenu` attribute.
 contextmenu : Str -> Attribute
-contextmenu = attribute "contextmenu"
+contextmenu = attribute("contextmenu")
 
 ## Construct a `controls` attribute.
 controls : Str -> Attribute
-controls = attribute "controls"
+controls = attribute("controls")
 
 ## Construct a `coords` attribute.
 coords : Str -> Attribute
-coords = attribute "coords"
+coords = attribute("coords")
 
 ## Construct a `crossorigin` attribute.
 crossorigin : Str -> Attribute
-crossorigin = attribute "crossorigin"
+crossorigin = attribute("crossorigin")
 
 ## Construct a `csp` attribute.
 csp : Str -> Attribute
-csp = attribute "csp"
+csp = attribute("csp")
 
 ## Construct a `data` attribute.
 data : Str -> Attribute
-data = attribute "data"
+data = attribute("data")
 
 ## Construct a `datetime` attribute.
 datetime : Str -> Attribute
-datetime = attribute "datetime"
+datetime = attribute("datetime")
 
 ## Construct a `decoding` attribute.
 decoding : Str -> Attribute
-decoding = attribute "decoding"
+decoding = attribute("decoding")
 
 ## Construct a `default` attribute.
 default : Str -> Attribute
-default = attribute "default"
+default = attribute("default")
 
 ## Construct a `defer` attribute.
 defer : Str -> Attribute
-defer = attribute "defer"
+defer = attribute("defer")
 
 ## Construct a `dir` attribute.
 dir : Str -> Attribute
-dir = attribute "dir"
+dir = attribute("dir")
 
 ## Construct a `dirname` attribute.
 dirname : Str -> Attribute
-dirname = attribute "dirname"
+dirname = attribute("dirname")
 
 ## Construct a `disabled` attribute.
 disabled : Str -> Attribute
-disabled = attribute "disabled"
+disabled = attribute("disabled")
 
 ## Construct a `download` attribute.
 download : Str -> Attribute
-download = attribute "download"
+download = attribute("download")
 
 ## Construct a `draggable` attribute.
 draggable : Str -> Attribute
-draggable = attribute "draggable"
+draggable = attribute("draggable")
 
 ## Construct a `enctype` attribute.
 enctype : Str -> Attribute
-enctype = attribute "enctype"
+enctype = attribute("enctype")
 
 ## Construct a `enterkeyhint` attribute.
 enterkeyhint : Str -> Attribute
-enterkeyhint = attribute "enterkeyhint"
+enterkeyhint = attribute("enterkeyhint")
 
 ## Construct a `for` attribute.
 for : Str -> Attribute
-for = attribute "for"
+for = attribute("for")
 
 ## Construct a `form` attribute.
 form : Str -> Attribute
-form = attribute "form"
+form = attribute("form")
 
 ## Construct a `formaction` attribute.
 formaction : Str -> Attribute
-formaction = attribute "formaction"
+formaction = attribute("formaction")
 
 ## Construct a `formenctype` attribute.
 formenctype : Str -> Attribute
-formenctype = attribute "formenctype"
+formenctype = attribute("formenctype")
 
 ## Construct a `formmethod` attribute.
 formmethod : Str -> Attribute
-formmethod = attribute "formmethod"
+formmethod = attribute("formmethod")
 
 ## Construct a `formnovalidate` attribute.
 formnovalidate : Str -> Attribute
-formnovalidate = attribute "formnovalidate"
+formnovalidate = attribute("formnovalidate")
 
 ## Construct a `formtarget` attribute.
 formtarget : Str -> Attribute
-formtarget = attribute "formtarget"
+formtarget = attribute("formtarget")
 
 ## Construct a `headers` attribute.
 headers : Str -> Attribute
-headers = attribute "headers"
+headers = attribute("headers")
 
 ## Construct a `height` attribute.
 height : Str -> Attribute
-height = attribute "height"
+height = attribute("height")
 
 ## Construct a `hidden` attribute.
 hidden : Str -> Attribute
-hidden = attribute "hidden"
+hidden = attribute("hidden")
 
 ## Construct a `high` attribute.
 high : Str -> Attribute
-high = attribute "high"
+high = attribute("high")
 
 ## Construct a `href` attribute.
 href : Str -> Attribute
-href = attribute "href"
+href = attribute("href")
 
 ## Construct a `hreflang` attribute.
 hreflang : Str -> Attribute
-hreflang = attribute "hreflang"
+hreflang = attribute("hreflang")
 
 ## Construct a `http-equiv` attribute.
-httpEquiv : Str -> Attribute
-httpEquiv = attribute "http-equiv"
+http_equiv : Str -> Attribute
+http_equiv = attribute("http-equiv")
 
 ## Construct a `icon` attribute.
 icon : Str -> Attribute
-icon = attribute "icon"
+icon = attribute("icon")
 
 ## Construct a `id` attribute.
 id : Str -> Attribute
-id = attribute "id"
+id = attribute("id")
 
 ## Construct a `importance` attribute.
 importance : Str -> Attribute
-importance = attribute "importance"
+importance = attribute("importance")
 
 ## Construct a `inputmode` attribute.
 inputmode : Str -> Attribute
-inputmode = attribute "inputmode"
+inputmode = attribute("inputmode")
 
 ## Construct a `integrity` attribute.
 integrity : Str -> Attribute
-integrity = attribute "integrity"
+integrity = attribute("integrity")
 
 ## Construct a `intrinsicsize` attribute.
 intrinsicsize : Str -> Attribute
-intrinsicsize = attribute "intrinsicsize"
+intrinsicsize = attribute("intrinsicsize")
 
 ## Construct a `ismap` attribute.
 ismap : Str -> Attribute
-ismap = attribute "ismap"
+ismap = attribute("ismap")
 
 ## Construct a `itemprop` attribute.
 itemprop : Str -> Attribute
-itemprop = attribute "itemprop"
+itemprop = attribute("itemprop")
 
 ## Construct a `keytype` attribute.
 keytype : Str -> Attribute
-keytype = attribute "keytype"
+keytype = attribute("keytype")
 
 ## Construct a `kind` attribute.
 kind : Str -> Attribute
-kind = attribute "kind"
+kind = attribute("kind")
 
 ## Construct a `label` attribute.
 label : Str -> Attribute
-label = attribute "label"
+label = attribute("label")
 
 ## Construct a `lang` attribute.
 lang : Str -> Attribute
-lang = attribute "lang"
+lang = attribute("lang")
 
 ## Construct a `language` attribute.
 language : Str -> Attribute
-language = attribute "language"
+language = attribute("language")
 
 ## Construct a `list` attribute.
 list : Str -> Attribute
-list = attribute "list"
+list = attribute("list")
 
 ## Construct a `loading` attribute.
 loading : Str -> Attribute
-loading = attribute "loading"
+loading = attribute("loading")
 
 ## Construct a `loop` attribute.
 loop : Str -> Attribute
-loop = attribute "loop"
+loop = attribute("loop")
 
 ## Construct a `low` attribute.
 low : Str -> Attribute
-low = attribute "low"
+low = attribute("low")
 
 ## Construct a `manifest` attribute.
 manifest : Str -> Attribute
-manifest = attribute "manifest"
+manifest = attribute("manifest")
 
 ## Construct a `max` attribute.
 max : Str -> Attribute
-max = attribute "max"
+max = attribute("max")
 
 ## Construct a `maxlength` attribute.
 maxlength : Str -> Attribute
-maxlength = attribute "maxlength"
+maxlength = attribute("maxlength")
 
 ## Construct a `media` attribute.
 media : Str -> Attribute
-media = attribute "media"
+media = attribute("media")
 
 ## Construct a `method` attribute.
 method : Str -> Attribute
-method = attribute "method"
+method = attribute("method")
 
 ## Construct a `min` attribute.
 min : Str -> Attribute
-min = attribute "min"
+min = attribute("min")
 
 ## Construct a `minlength` attribute.
 minlength : Str -> Attribute
-minlength = attribute "minlength"
+minlength = attribute("minlength")
 
 ## Construct a `multiple` attribute.
 multiple : Str -> Attribute
-multiple = attribute "multiple"
+multiple = attribute("multiple")
 
 ## Construct a `muted` attribute.
 muted : Str -> Attribute
-muted = attribute "muted"
+muted = attribute("muted")
 
 ## Construct a `name` attribute.
 name : Str -> Attribute
-name = attribute "name"
+name = attribute("name")
 
 ## Construct a `novalidate` attribute.
 novalidate : Str -> Attribute
-novalidate = attribute "novalidate"
+novalidate = attribute("novalidate")
 
 ## Construct a `open` attribute.
 open : Str -> Attribute
-open = attribute "open"
+open = attribute("open")
 
 ## Construct a `optimum` attribute.
 optimum : Str -> Attribute
-optimum = attribute "optimum"
+optimum = attribute("optimum")
 
 ## Construct a `pattern` attribute.
 pattern : Str -> Attribute
-pattern = attribute "pattern"
+pattern = attribute("pattern")
 
 ## Construct a `ping` attribute.
 ping : Str -> Attribute
-ping = attribute "ping"
+ping = attribute("ping")
 
 ## Construct a `placeholder` attribute.
 placeholder : Str -> Attribute
-placeholder = attribute "placeholder"
+placeholder = attribute("placeholder")
 
 ## Construct a `poster` attribute.
 poster : Str -> Attribute
-poster = attribute "poster"
+poster = attribute("poster")
 
 ## Construct a `preload` attribute.
 preload : Str -> Attribute
-preload = attribute "preload"
+preload = attribute("preload")
 
 ## Construct a `radiogroup` attribute.
 radiogroup : Str -> Attribute
-radiogroup = attribute "radiogroup"
+radiogroup = attribute("radiogroup")
 
 ## Construct a `readonly` attribute.
 readonly : Str -> Attribute
-readonly = attribute "readonly"
+readonly = attribute("readonly")
 
 ## Construct a `referrerpolicy` attribute.
 referrerpolicy : Str -> Attribute
-referrerpolicy = attribute "referrerpolicy"
+referrerpolicy = attribute("referrerpolicy")
 
 ## Construct a `rel` attribute.
 rel : Str -> Attribute
-rel = attribute "rel"
+rel = attribute("rel")
 
 ## Construct a `required` attribute.
 required : Str -> Attribute
-required = attribute "required"
+required = attribute("required")
 
 ## Construct a `reversed` attribute.
 reversed : Str -> Attribute
-reversed = attribute "reversed"
+reversed = attribute("reversed")
 
 ## Construct a `role` attribute.
 role : Str -> Attribute
-role = attribute "role"
+role = attribute("role")
 
 ## Construct a `rows` attribute.
 rows : Str -> Attribute
-rows = attribute "rows"
+rows = attribute("rows")
 
 ## Construct a `rowspan` attribute.
 rowspan : Str -> Attribute
-rowspan = attribute "rowspan"
+rowspan = attribute("rowspan")
 
 ## Construct a `sandbox` attribute.
 sandbox : Str -> Attribute
-sandbox = attribute "sandbox"
+sandbox = attribute("sandbox")
 
 ## Construct a `scope` attribute.
 scope : Str -> Attribute
-scope = attribute "scope"
+scope = attribute("scope")
 
 ## Construct a `scoped` attribute.
 scoped : Str -> Attribute
-scoped = attribute "scoped"
+scoped = attribute("scoped")
 
 ## Construct a `selected` attribute.
 selected : Str -> Attribute
-selected = attribute "selected"
+selected = attribute("selected")
 
 ## Construct a `shape` attribute.
 shape : Str -> Attribute
-shape = attribute "shape"
+shape = attribute("shape")
 
 ## Construct a `size` attribute.
 size : Str -> Attribute
-size = attribute "size"
+size = attribute("size")
 
 ## Construct a `sizes` attribute.
 sizes : Str -> Attribute
-sizes = attribute "sizes"
+sizes = attribute("sizes")
 
 ## Construct a `slot` attribute.
 slot : Str -> Attribute
-slot = attribute "slot"
+slot = attribute("slot")
 
 ## Construct a `span` attribute.
 span : Str -> Attribute
-span = attribute "span"
+span = attribute("span")
 
 ## Construct a `spellcheck` attribute.
 spellcheck : Str -> Attribute
-spellcheck = attribute "spellcheck"
+spellcheck = attribute("spellcheck")
 
 ## Construct a `src` attribute.
 src : Str -> Attribute
-src = attribute "src"
+src = attribute("src")
 
 ## Construct a `srcdoc` attribute.
 srcdoc : Str -> Attribute
-srcdoc = attribute "srcdoc"
+srcdoc = attribute("srcdoc")
 
 ## Construct a `srclang` attribute.
 srclang : Str -> Attribute
-srclang = attribute "srclang"
+srclang = attribute("srclang")
 
 ## Construct a `srcset` attribute.
 srcset : Str -> Attribute
-srcset = attribute "srcset"
+srcset = attribute("srcset")
 
 ## Construct a `start` attribute.
 start : Str -> Attribute
-start = attribute "start"
+start = attribute("start")
 
 ## Construct a `step` attribute.
 step : Str -> Attribute
-step = attribute "step"
+step = attribute("step")
 
 ## Construct a `style` attribute.
 style : Str -> Attribute
-style = attribute "style"
+style = attribute("style")
 
 ## Construct a `summary` attribute.
 summary : Str -> Attribute
-summary = attribute "summary"
+summary = attribute("summary")
 
 ## Construct a `tabindex` attribute.
 tabindex : Str -> Attribute
-tabindex = attribute "tabindex"
+tabindex = attribute("tabindex")
 
 ## Construct a `target` attribute.
 target : Str -> Attribute
-target = attribute "target"
+target = attribute("target")
 
 ## Construct a `title` attribute.
 title : Str -> Attribute
-title = attribute "title"
+title = attribute("title")
 
 ## Construct a `translate` attribute.
 translate : Str -> Attribute
-translate = attribute "translate"
+translate = attribute("translate")
 
 ## Construct a `type` attribute.
 type : Str -> Attribute
-type = attribute "type"
+type = attribute("type")
 
 ## Construct a `usemap` attribute.
 usemap : Str -> Attribute
-usemap = attribute "usemap"
+usemap = attribute("usemap")
 
 ## Construct a `value` attribute.
 value : Str -> Attribute
-value = attribute "value"
+value = attribute("value")
 
 ## Construct a `width` attribute.
 width : Str -> Attribute
-width = attribute "width"
+width = attribute("width")
 
 ## Construct a `wrap` attribute.
 wrap : Str -> Attribute
-wrap = attribute "wrap"
+wrap = attribute("wrap")
