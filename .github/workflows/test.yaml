@@ -24,6 +24,6 @@ jobs:
       - name: Install Roc
         uses: hasnep/setup-roc@9866c6fdc971ee9f4b3eeba03d825dc32a5efa7f # ratchet:hasnep/setup-roc@v0.5.0
         with:
-          roc-version: nightly
+          roc-version: 0.0.0-alpha2-rolling
       - name: Test the library
         run: roc test src/main.roc
