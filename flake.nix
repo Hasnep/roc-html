@@ -11,13 +11,7 @@
   };
 
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      flake-parts,
-      roc,
-      ...
-    }:
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "aarch64-darwin"
@@ -32,19 +26,22 @@
             name = "roc-html";
             packages = [
               inputs'.roc.packages.cli
+            ]
+            # Pre-commit
+            ++ [
               pkgs.actionlint
               pkgs.check-jsonschema
               pkgs.fd
               pkgs.just
-              pkgs.nixfmt-rfc-style
-              pkgs.nodePackages.prettier
+              pkgs.nixfmt
               pkgs.pre-commit
-              pkgs.python312Packages.pre-commit-hooks
+              pkgs.prettier
+              pkgs.python3Packages.pre-commit-hooks
               pkgs.ratchet
             ];
             shellHook = "pre-commit install --overwrite";
           };
-          formatter = pkgs.nixfmt-rfc-style;
+          formatter = pkgs.nixfmt-tree;
         };
     };
 }
