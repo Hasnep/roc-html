@@ -15,7 +15,7 @@ jobs:
       id-token: write
     steps:
       - name: Check out the repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v5
       - name: Install Roc
         uses: hasnep/setup-roc@9866c6fdc971ee9f4b3eeba03d825dc32a5efa7f # ratchet:hasnep/setup-roc@v0.5.0
         with:
@@ -26,7 +26,7 @@ jobs:
         run: |
           find generated-docs/ -type f -name '*.html' -exec sed -i "s/\(href\|src\)=\"\//\1=\"\/${{ github.event.repository.name }}\//g" {} +
       - name: Upload docs artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # ratchet:actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # ratchet:actions/upload-pages-artifact@v4
         with:
           path: generated-docs
       - name: Deploy docs

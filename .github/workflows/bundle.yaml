@@ -14,7 +14,7 @@ jobs:
       contents: write
     steps:
       - name: Check out the repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v5
       - name: Install Roc
         uses: hasnep/setup-roc@9866c6fdc971ee9f4b3eeba03d825dc32a5efa7f # ratchet:hasnep/setup-roc@v0.5.0
         with:
