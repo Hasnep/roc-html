@@ -23,6 +23,7 @@ module [
     checked,
     cite,
     class,
+    classes,
     code,
     codebase,
     color,
@@ -227,8 +228,26 @@ cite : Str -> Attribute
 cite = attribute("cite")
 
 ## Construct a `class` attribute.
+##
+## See the [classes] function to apply multiple classes simultaneously.
 class : Str -> Attribute
 class = attribute("class")
+
+## Construct a `class` attribute from a list of classes.
+##
+## See the [class] function to apply a single class.
+## For example:
+## ```
+## classes(["a", "b", "c", "a"]) == class("a b c")
+## ```
+classes : List Str -> Attribute
+classes = |list_of_classes|
+    unique_classes = Set.to_list(Set.from_list(list_of_classes))
+    class(Str.join_with(unique_classes, " "))
+
+expect
+    out = classes(["a", "b", "c", "a"])
+    out == class("a b c")
 
 ## Construct a `code` attribute.
 code : Str -> Attribute
